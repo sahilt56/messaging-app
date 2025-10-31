@@ -1,26 +1,95 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* 🌞 Light Mode */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --bg-subtle: #f9fafb;
+  --border-color: #e5e7eb;
+  --text-muted: #6b7281;
+  --primary: #4f46e5; /* Indigo 600 */
+  --primary-foreground: #ffffff;
+  --chat-bg: rgba(79, 70, 229, 0.08);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 🌚 Dark Mode */
+html.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --bg-subtle: #111827;
+  --border-color: #374151;
+  --text-muted: #9ca3af;
+  --primary: #6366f1; /* Indigo 500 */
+  --primary-foreground: #ffffff;
+  --chat-bg: rgba(99, 102, 241, 0.15);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 🔄 Smooth transitions when theme changes */
+* {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
+/* 🧱 SUPER STRONG Scrollbar Hide - FOR ALL BROWSERS */
+.container::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.container,
+.scrollbar-hide {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+  overflow: -moz-scrollbars-none !important; /* Old Firefox */
+}
+
+/* Extra force for stubborn scrollbars */
+.container::-webkit-scrollbar-track,
+.scrollbar-hide::-webkit-scrollbar-track {
+  display: none !important;
+}
+
+.container::-webkit-scrollbar-thumb,
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  display: none !important;
+}
+
+/* ⚙️ Default Colors on Body */
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 🎨 Support for Tailwind classes using CSS variables */
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+.text-primary {
+  color: var(--primary) !important;
+}
+.border-primary {
+  border-color: var(--primary) !important;
+}
+.text-primary-foreground {
+  color: var(--primary-foreground) !important;
+}
+.bg-primary-foreground {
+  background-color: var(--primary-foreground) !important;
+}
+.bg-chat {
+  background-color: var(--chat-bg) !important;
+}
+
+/* 🧩 Move Next.js Turbopack "N" icon */
+#nextjs-dev-overlay button {
+  bottom: auto !important;
+  top: 10px !important;
+  left: auto !important;
+  right: 10px !important;
+  z-index: 99999 !important;
+  position: fixed !important;
 }
