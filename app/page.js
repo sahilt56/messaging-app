@@ -242,45 +242,9 @@ export default function AuthPage() {
             </svg>
             Continue with Google
           </button>
-
-          {/* <button
-            onClick={() => handleOAuthLogin('apple')}
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition disabled:opacity-50"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-            </svg>
-            Continue with Apple
-          </button> */}
-
-          {/* <button
-            onClick={() => handleOAuthLogin('microsoft')}
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition disabled:opacity-50"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
-              <path fill="#f25022" d="M1 1h10v10H1z"/>
-              <path fill="#00a4ef" d="M13 1h10v10H13z"/>
-              <path fill="#7fba00" d="M1 13h10v10H1z"/>
-              <path fill="#ffb900" d="M13 13h10v10H13z"/>
-            </svg>
-            Continue with Microsoft
-          </button> */}
-
-          {/* <button
-            onClick={() => handleOAuthLogin('yandex')}
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition disabled:opacity-50"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
-              <circle fill="#FF0000" cx="12" cy="12" r="11"/>
-              <path fill="white" d="M13.5 6h-2.8c-2.5 0-3.9 1.4-3.9 3.5 0 1.9 1 3.1 2.5 3.7l-3.3 6.3h2.8l3-5.8h1.7v5.8h2.5V6h-.5zm-2.5 6.5h-1c-1.3 0-2-.8-2-2.2s.7-2.2 2-2.2h1v4.4z"/>
-            </svg>
-            Continue with Yandex
-          </button> */}
+          
         </div>
-
+        {/* // Divider */}
         <div className="relative mb-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300"></div>
