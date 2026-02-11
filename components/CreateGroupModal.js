@@ -1,7 +1,8 @@
 // components/CreateGroupModal.js
 
 import { useState, useRef } from 'react';
-import { createGroupChat, searchUsersByEmail } from '@/lib/pocketbase';
+// 👈 1. 'searchUsersByEmail' ya 'searchUsers' ki jagah naya function import karein
+import { createGroupChat, searchUsersByUsername } from '@/lib/pocketbase';
 import UserAvatar from './UserAvatar';
 
 export default function CreateGroupModal({ isOpen, onClose, currentUser, onGroupCreated, onNotification }) {
@@ -24,7 +25,8 @@ export default function CreateGroupModal({ isOpen, onClose, currentUser, onGroup
 
     setSearching(true);
     try {
-      const users = await searchUsersByEmail(query);
+      // 👈 2. Naye function ko call karein
+      const users = await searchUsersByUsername(query);
       const filteredUsers = users.filter(
         user => user.id !== currentUser.id && !selectedUsers.find(u => u.id === user.id)
       );
@@ -133,6 +135,8 @@ export default function CreateGroupModal({ isOpen, onClose, currentUser, onGroup
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* ... (Group Icon aur Group Name ka code waisa hi rahega) ... */}
+          
           {/* Group Icon */}
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-4">Group Icon (Optional)</h3>
@@ -184,7 +188,7 @@ export default function CreateGroupModal({ isOpen, onClose, currentUser, onGroup
             />
           </div>
 
-          {/* Selected Users */}
+          {/* ... (Selected Users ka code waisa hi rahega) ... */}
           {selectedUsers.length > 0 && (
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-4">
@@ -212,6 +216,7 @@ export default function CreateGroupModal({ isOpen, onClose, currentUser, onGroup
             </div>
           )}
 
+
           {/* Search Users */}
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-4">Add Participants</h3>
@@ -220,7 +225,8 @@ export default function CreateGroupModal({ isOpen, onClose, currentUser, onGroup
                 type="text"
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Search users by email..."
+                // 👈 3. Placeholder text badlein
+                placeholder="Search users by @username..."
                 className="w-full px-4 py-3 pl-10 border border-border-color bg-bg-subtle text-foreground rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
               />
               <svg
@@ -249,7 +255,8 @@ export default function CreateGroupModal({ isOpen, onClose, currentUser, onGroup
                     <UserAvatar name={user.name} user={user} size="md" />
                     <div className="flex-1">
                       <p className="font-medium text-foreground">{user.name}</p>
-                      <p className="text-sm text-text-muted">{user.email}</p>
+                      {/* 👈 4. Email ki jagah @username dikhayein */}
+                      <p className="text-sm text-text-muted">@{user.username}</p>
                     </div>
                     <button className="p-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

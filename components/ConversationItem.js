@@ -207,7 +207,7 @@ export default function ConversationItem({
       onClick={onClick}
       className={`p-3 md:p-4 cursor-pointer transition hover:bg-bg-subtle relative group ${
         isSelected ? 'bg-bg-subtle border-l-4 border-indigo-600' : ''
-      }`}
+      }z-0`}
     >
       <div className="flex items-center space-x-2 md:space-x-3">
         {/* Avatar */}
@@ -250,7 +250,7 @@ export default function ConversationItem({
             e.stopPropagation();
             setShowDeleteConfirm(true);
           }}
-          className="opacity-0 group-hover:opacity-100 md:p-2 p-1.5 hover:bg-red-100 rounded-lg transition-all duration-200 shrink-0"
+          className="md:opacity-0 group-hover:md:opacity-100 md:p-2 p-1.5 hover:bg-red-100 rounded-lg transition-all duration-200 shrink-0"
           title={conversation?.isGroup ? (isAdmin ? "Delete group" : "Leave group") : "Delete chat"}
         >
           <svg className="w-4 h-4 md:w-5 md:h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

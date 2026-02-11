@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { isGroupAdmin } from "@/lib/pocketbase";
+import AddFriendModal from '@/components/AddFriendModal';
 
 import { 
   getMessages, 
@@ -59,7 +60,10 @@ export default function ChatArea({
   const [showGroupInfoModal, setShowGroupInfoModal] = useState(false);
   const [showClearChatConfirm, setShowClearChatConfirm] = useState(false);
   const [isClearingChat, setIsClearingChat] = useState(false);
+  const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false);
   
+  // Maan lijiye aapke paas currentUser state mein hai
+  // const [currentUser, setCurrentUser] = useState(pb.authStore.model);
   const openScheduleModal = () => setShowScheduleModal(true);
   const openTimerModal = () => setShowTimerModal(true);
   const openChatInfoModal = () => setShowChatInfoModal(true);
@@ -463,6 +467,11 @@ export default function ChatArea({
       setTypingStatus(conversation.id, currentUser.id, typing);
     }
   };
+  const showNotification = (message, type) => {
+    // alert(message); // Simple alert
+    // toast.success(message); // react-toastify ka udaharan
+    console.log(type, message); 
+  };
 
   if (!conversation) {
     return (
@@ -492,7 +501,6 @@ export default function ChatArea({
         {/* MOBILE OPTIMIZED: Chat Header */}
         <div className="px-3 md:px-6 py-3 md:py-4 border-b border-border-color bg-background shadow-sm sticky top-0 z-10">
           <div className="flex items-center space-x-2 md:space-x-4">
-            
             {/* Back Button for Mobile */}
             <button
               onClick={onGoBack}
@@ -632,6 +640,13 @@ export default function ChatArea({
         onForward={handleForwardConfirmed}
         message={messageToForward}
         onNotification={onNotification}
+      />
+      {/* Modal ko yahaan render karein */}
+      <AddFriendModal 
+        isOpen={isAddFriendModalOpen}
+        onClose={() => setIsAddFriendModalOpen(false)}
+        currentUser={currentUser}
+        onNotification={showNotification}
       />
       <GroupInfoModal
         isOpen={showGroupInfoModal}

@@ -1,7 +1,7 @@
 // components/AddParticipantModal.js
 import { useState, useRef, useMemo } from 'react';
 import { 
-  searchUsersByEmail, 
+  searchUsers, 
   addParticipantToGroup, 
   sendMessage 
 } from '@/lib/pocketbase';
@@ -36,7 +36,7 @@ export default function AddParticipantModal({
     }, 250);
 
     try {
-      const users = await searchUsersByEmail(query);
+      const users = await searchUsers(query);
       // --- UPDATED Filtering ---
       // Filter out users already in the group
       const filteredUsers = users.filter(u => !currentParticipantIds.includes(u.id));

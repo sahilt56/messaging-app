@@ -1,86 +1,96 @@
 import { getAvatarUrl } from '@/lib/pocketbase';
 
-export default function UserAvatar({ name, user, avatar, size = 'md', online = false }) {
-  // Get avatar URL from user object or avatar string
-  const avatarUrl = user ? getAvatarUrl(user) : avatar;
+// --- Helper Functions (Component ke bahar) ---
 
-  // Get initials from name
-  const getInitials = (name) => {
-    if (!name) return '?';
-    const words = name.trim().split(' ');
-    if (words.length >= 2) {
-      return (words[0][0] + words[1][0]).toUpperCase();
-    }
-    return name.substring(0, 2).toUpperCase();
-  };
+/**
+ * Naam se 'Initials' nikalta hai (Jaise "Sahil Kumar" -> "SK")
+ */
+const getInitials = (name) => {
+  if (!name || typeof name !== 'string') return '?';
+  
+  const names = name.trim().split(' ').filter(Boolean); // "Sahil Kumar" -> ["Sahil", "Kumar"]
+  if (names.length === 0) return '?';
 
-  // Generate color based on name
-  const getColor = (name) => {
-    if (!name) return 'bg-gray-400';
-    
-    const colors = [
-      'bg-red-500',
-      'bg-blue-500',
-      'bg-green-500',
-      'bg-yellow-500',
-      'bg-purple-500',
-      'bg-pink-500',
-      'bg-indigo-500',
-      'bg-teal-500',
-    ];
-    
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    
-    return colors[Math.abs(hash) % colors.length];
-  };
+  const firstInitial = names[0][0]; // 'S'
+  
+  // Aakhri naam ka pehla akshar (agar hai)
+  const lastInitial = names.length > 1 ? names[names.length - 1][0] : ''; // 'K'
+  
+  return (firstInitial + lastInitial).toUpperCase(); // 'SK'
+};
 
-  const sizeClasses = {
-    xs: 'w-8 h-8 text-xs',
-    sm: 'w-10 h-10 text-sm',
-    md: 'w-12 h-12 text-base',
-    lg: 'w-16 h-16 text-xl',
-    xl: 'w-20 h-20 text-2xl',
-  };
+/**
+ * Naam se ek consistent color generate karta hai
+ */
+const getColor = (name) => {
+  if (!name) return 'bg-gray-400';
+  
+  const colors = [
+    'bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500',
+    'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 'bg-teal-500',
+  ];
+  
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  
+  return colors[Math.abs(hash) % colors.length];
+};
 
-  const onlineDotSizes = {
-    xs: 'w-2 h-2',
-    sm: 'w-2.5 h-2.5',
-    md: 'w-3 h-3',
-    lg: 'w-4 h-4',
-    xl: 'w-5 h-5',
-  };
+// --- Aapke Size Classes (Aapke file se) ---
+const sizeClasses = {
+  xs: 'w-8 h-8 text-xs',
+  sm: 'w-10 h-10 text-sm',
+  md: 'w-12 h-12 text-base',
+  lg: 'w-16 h-16 text-xl',
+  xl: 'w-20 h-20 text-2xl',
+};
+
+const onlineDotSizes = {
+  xs: 'w-2 h-2',
+  sm: 'w-2.5 h-2.5',
+  md: 'w-3 h-3',
+  lg: 'w-4 h-4',
+  xl: 'w-5 h-5',
+};
+
+// --- Mukhya Component ---
+export default function UserAvatar({ user, name, size = 'md', online = false }) {
+  
+  // 1. Zaroori data nikaalein
+  const avatarUrl = user ? getAvatarUrl(user) : null;
+  const displayName = name || user?.name || 'Unknown User'; // 'name' prop ko override ke roop mein istemaal karein
+  const initials = getInitials(displayName);
+  const color = getColor(displayName);
+
+  // 2. Sahi size classes chunein
+  const currentSize = sizeClasses[size] || sizeClasses['md'];
+  const currentOnlineDotSize = onlineDotSizes[size] || onlineDotSizes['md'];
 
   return (
-    <div className="relative inline-block">
+    <div className={`relative inline-block flex-shrink-0 ${currentSize}`}>
+      
       {avatarUrl ? (
-        // Show uploaded avatar image
+        // Agar 'avatarUrl' hai, to image dikhayein
         <img
           src={avatarUrl}
-          alt={name || 'User'}
-          className={`${sizeClasses[size]} rounded-full object-cover border-2 border-gray-200`}
-          onError={(e) => {
-            // Fallback to initials if image fails to load
-            e.target.style.display = 'none';
-            e.target.nextSibling.style.display = 'flex';
-          }}
+          alt={displayName}
+          className="w-full h-full rounded-full object-cover border-2 border-gray-200"
         />
-      ) : null}
-      
-      {/* Fallback to initials - shown if no avatar or image load fails */}
-      <div
-        className={`${sizeClasses[size]} ${getColor(name)} rounded-full flex items-center justify-center text-white font-semibold ${avatarUrl ? 'hidden' : ''}`}
-        style={avatarUrl ? { display: 'none' } : {}}
-      >
-        {getInitials(name)}
-      </div>
+      ) : (
+        // Agar 'avatarUrl' NAHIN hai, to 'Initials' dikhayein
+        <div
+          className={`w-full h-full ${color} rounded-full flex items-center justify-center text-white font-semibold`}
+        >
+          {initials}
+        </div>
+      )}
       
       {/* Online status indicator */}
       {online && (
         <div 
-          className={`${onlineDotSizes[size]} bg-green-500 border-2 border-white rounded-full absolute bottom-0 right-0 shadow-sm`}
+          className={`${currentOnlineDotSize} bg-green-500 border-2 border-white rounded-full absolute bottom-0 right-0 shadow-sm`}
           title="Online"
         ></div>
       )}
